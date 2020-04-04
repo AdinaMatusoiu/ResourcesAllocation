@@ -1,4 +1,24 @@
 const db=require("./config/db");
-db.authenticate();
+const app=require('./app');
+const config=require('./config/config');
+const associations = require('./models/associations');
 
-db.query("select * from resources").then(result => console.log(result));
+db.sync();
+// db.sync({force: true});
+app.listen(config.port);
+
+
+
+
+// const resource=require("./models/Resource");
+
+// resource.create({name: 'test3'}).then(() => {
+//     resource.findAll({attributes: ['id'],raw:true}).then(result=>console.log(result));
+// });
+//resource.findAll().then(result=>console.log(result));
+
+
+
+
+
+
