@@ -1,10 +1,10 @@
-const db=require("./config/db");
-const app=require('./app');
-const config=require('./config/config');
+const db = require("./config/db");
+const app = require('./app');
+const config = require('./config/config');
 const associations = require('./models/associations');
 
 db.sync();
-// db.sync({force: true});
+// db.sync({ force: true });
 app.listen(config.port);
 
 
