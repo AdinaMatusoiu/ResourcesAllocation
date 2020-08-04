@@ -11,6 +11,8 @@ import Login from './components/views/Login';
 import Home from './components/views/Home';
 import Protected from './components/Protected';
 import Navbar from './components/Navbar';
+import Reports from './components/views/Reports';
+import Contact from './components/views/Contact';
 
 export default class App extends React.Component {
   render() {
@@ -29,6 +31,12 @@ export default class App extends React.Component {
           </Route>
           <Route path="/home">
             <Protected Component={Home} />
+          </Route>
+          <Route path="/reports">
+            <Reports />
+          </Route>
+          <Route path="/contact">
+            <Contact />
           </Route>
         </Switch>
       </Router>

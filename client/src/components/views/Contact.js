@@ -2,17 +2,19 @@ import React from 'react';
 import history from '../../history';
 import http from '../../http';
 
-export default class Home extends React.Component {
+export default class Contact extends React.Component {
 
-    constructor(props) {
+    constructor(props){
         super(props);
     }
-    
-    render() {
-        return (
+
+    render(){
+        return(
             <div>
-                HOME
+                CONTACTEEE
             </div>
         )
     }
+
+
 }
