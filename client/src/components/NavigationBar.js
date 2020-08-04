@@ -12,13 +12,13 @@ export default class Navigationbar extends React.Component {
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="mr-auto">
-                        <Nav.Link href="/home">Home</Nav.Link>
-                        <Nav.Link href="/contact">Contact</Nav.Link>
-                        <Nav.Link href="/tasks">Tasks</Nav.Link>
-                        <Nav.Link href="/reports">Reports</Nav.Link>
+                        <Link className="link" to="/home">Home</Link>
+                        <Link className="link" to="/contact">Contact</Link>
+                        <Link className="link" to="/tasks">Tasks</Link>
+                        <Link className="link" to="/reports">Reports</Link>
                     </Nav>
                     <Nav>
-                        <Nav.Link href="/login" onClick={() => localStorage.clear()}>Sign Out</Nav.Link>
+                        <Link className="link" to="/login" onClick={() => localStorage.clear()}>Sign Out</Link>
                     </Nav>
                 </Navbar.Collapse>
             </Navbar>

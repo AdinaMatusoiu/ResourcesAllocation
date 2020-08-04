@@ -3,7 +3,7 @@ module.exports = {
     dbName: 'resources_allocation',
     dbHost: 'localhost',
     dbUser: 'root',
-    dbPassword: 'gagarin',
+    dbPassword: 'royalwithcheese0403',
     dbDialect: 'mysql',
     saltRounds: 10,
     companySecretCode: 'veryVerySecretCode',

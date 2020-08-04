@@ -1,14 +1,16 @@
 import React from 'react';
 import http from '../../http';
-import { Button } from 'react-bootstrap';
+import { Button, Toast } from 'react-bootstrap';
 import TaskModal from '../TaskModal';
+import ToastWrapper from '../ToastWrapper';
 
 export default class Tasks extends React.Component {
 
     constructor(props) {
         super(props);
+        this.toastRef = React.createRef();
         this.state = {
-            show: false,
+            showModal: false,
             tasks: [],
             currentTask: null,
             enums: {
@@ -26,16 +28,23 @@ export default class Tasks extends React.Component {
     }
 
     handleShow() {
-        this.setState({ show: true });
+        this.setState({ showModal: true });
     }
 
     handleClose() {
-        this.setState({ show: false });
+        this.setState({ showModal: false });
     }
 
     handleSave(data) {
-        console.log(data);
-        this.setState({ show: false })
+        this.setState({ showModal: false })
+        http.post('/tasks', data)
+            .then(() => {
+                this.toastRef.current.show('Task created', '', 3000);
+            })
+            .catch(error => {
+                console.log(error);
+                this.toastRef.current.show('', error.data.message, 3000);
+            })
     }
 
     render() {
@@ -44,7 +53,8 @@ export default class Tasks extends React.Component {
                 <Button variant="primary" onClick={this.handleShow.bind(this)}>
                     + Create
                 </Button>
-                <TaskModal show={this.state.show} data={this.state.currentTask} enums={this.state.enums} onClose={this.handleClose.bind(this)} onSave={this.handleSave.bind(this)} />
+                <TaskModal style={{ zIndex: 100 }} show={this.state.showModal} data={this.state.currentTask} enums={this.state.enums} onClose={this.handleClose.bind(this)} onSave={this.handleSave.bind(this)} />
+                <ToastWrapper ref={this.toastRef} />
             </div>
         )
     }

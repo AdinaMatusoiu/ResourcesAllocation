@@ -12,6 +12,7 @@ export default class TaskModal extends React.Component {
             status: '',
             type: '',
             priority: '',
+            message: '',
         }
     }
 
@@ -31,22 +32,23 @@ export default class TaskModal extends React.Component {
         this.setState({
             name: '',
             description: '',
-            status: '',
-            type: '',
-            priority: '',
         });
         this.props.onClose();
     }
 
     handleSave() {
-        this.setState({
-            name: '',
-            description: '',
-            status: '',
-            type: '',
-            priority: '',
-        });
-        this.props.onSave(this.state);
+        const { name, description, status, type, priority } = this.state;
+
+        if (name && description && status && type && priority && this.props.enums.type.indexOf(type) !== -1 && this.props.enums.status.indexOf(status) !== -1 && this.props.enums.priority.indexOf(priority) !== -1) {
+            this.setState({
+                name: '',
+                description: '',
+            });
+            this.props.onSave({ name, description, status, type, priority });
+        } else {
+            console.log(this.state);
+            this.setState({ message: 'Please fill all fields!' });
+        }
     }
 
     render() {
@@ -85,13 +87,14 @@ export default class TaskModal extends React.Component {
                                 {this.props.enums.priority.map((priority, index) => <option key={index} value={priority}>{priority}</option>)}
                             </select>
                         </div>
+                        <p style={{ textAlign: 'center', color: 'red' }}>{this.state.message}</p>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={this.handleHide.bind(this)}>
                             Close
                         </Button>
                         <Button variant="primary" onClick={this.handleSave.bind(this)}>
-                            Save Changes
+                            Save
                         </Button>
                     </Modal.Footer>
                 </Modal>

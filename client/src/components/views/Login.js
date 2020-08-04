@@ -1,6 +1,7 @@
 import React from 'react';
 import history from '../../history';
 import http from '../../http';
+import { Button } from 'react-bootstrap';
 
 export default class Login extends React.Component {
     constructor() {
@@ -28,15 +29,11 @@ export default class Login extends React.Component {
 
     render() {
         return (
-            <div>
+            <form>
                 <div><input placeholder="email" onChange={this.handleEmailChange.bind(this)}></input></div>
                 <div><input placeholder="password" type="password" onChange={this.handlePasswordChange.bind(this)}></input></div>
-                <button onClick={this.login.bind(this)}>SIGN IN</button>
-                <button onClick={() => {
-                    http.get('/users/test').then(response => console.log(response))
-                        .catch(error => console.log(error));
-                }}>test</button>
-            </div>
+                <Button type="button" color="primary" onClick={this.login.bind(this)}>SIGN IN</Button>&nbsp;
+            </form>
         )
     }
 }
