@@ -4,14 +4,13 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const saltRounds = require('../config/config').saltRounds;
 const { secret } = require('../config/config');
-const auth = require('../auth');
 
 route.post('/login', (req, res) => {
     User.findOne({ where: { email: req.body.email }, raw: true }).then(user => {
         if (user) {
             bcrypt.compare(req.body.password, user.password_hash).then(result => {
                 if (result) {
-                    const token = jwt.sign({ user_id: result.id, user_role: result.user_role }, secret);
+                    const token = jwt.sign({ user_id: user.id, user_role: user.user_role }, secret);
                     res.send({ message: 'Success', access_token: token });
                 } else {
                     res.status(400).send({ message: 'Email or password is incorrect' });

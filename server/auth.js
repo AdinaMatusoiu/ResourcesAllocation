@@ -1,15 +1,18 @@
 const jwt = require('jsonwebtoken');
-const secret = require('./config/config');
+const { secret } = require('./config/config');
 
 module.exports = (req, res, next) => {
-    if (req.headers['authorization']) {
-        const token = req.headers['authorization'].split('Bearer ')[1];
-        const payload = jwt.decode(token);
-        if (payload) {
-            next();
-        } else {
-            res.status(401).send();
-        }
+    const authorization = req.headers['authorization'];
+    if (authorization) {
+        const token = authorization.split('Bearer ')[1];
+        jwt.verify(token, secret, (err, decoded) => {
+            if (err) {
+                res.status(401).send();
+            } else {
+                req.decoded = decoded;
+                next();
+            }
+        });
     } else {
         res.status(401).send();
     }
