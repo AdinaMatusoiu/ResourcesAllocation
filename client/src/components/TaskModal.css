@@ -1,0 +1,14 @@
+label {
+    width: 6em;
+    margin-right: 0.5em;
+    display: inline-block;
+    text-align: right;
+}
+
+input, textarea {
+    width: 50%;
+}
+
+textarea {
+    height: 5em;
+}

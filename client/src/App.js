@@ -10,13 +10,14 @@ import Register from './components/views/Register';
 import Login from './components/views/Login';
 import Home from './components/views/Home';
 import Protected from './components/Protected';
-import Navbar from './components/Navbar';
+import NavigationBar from './components/NavigationBar';
+import Tasks from './components/views/Tasks';
 
 export default class App extends React.Component {
   render() {
     return (
       <Router history={history}>
-        <Navbar />
+        <NavigationBar />
         <Switch>
           <Route path="/" exact>
             <Home />
@@ -29,6 +30,9 @@ export default class App extends React.Component {
           </Route>
           <Route path="/home">
             <Protected Component={Home} />
+          </Route>
+          <Route path="/tasks">
+            <Protected Component={Tasks} />
           </Route>
         </Switch>
       </Router>

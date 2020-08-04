@@ -5,10 +5,7 @@ const associations = require('./models/associations');
 
 db.sync();
 // db.sync({ force: true });
-app.listen(config.port);
-
-
-
+app.listen(config.port, () => console.log('server started on port ' + config.port));
 
 // const resource=require("./models/Resource");
 
