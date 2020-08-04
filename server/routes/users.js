@@ -5,13 +5,6 @@ const User = require('../models/User');
 const saltRounds = require('../config/config').saltRounds;
 const { secret } = require('../config/config');
 const auth = require('../auth');
-// bcrypt.hash(text).then(function(hash) {
-// 
-// })
-
-route.get('/test', auth, (req, res) => {
-    res.send({ message: 'OK' });
-})
 
 route.post('/login', (req, res) => {
     User.findOne({ where: { email: req.body.email }, raw: true }).then(user => {
@@ -62,15 +55,3 @@ route.post('/register', (req, res) => {
 })
 
 module.exports = route;
-
-
-// banane
-// altCuvant
-// a342KJJFL231.SD#2
-// hash(banane) = a342KJJFL231.SD#2
-
-
-// email: 'cutare', parola: 'parola'
-// hash('parola').then(hash => {
-
-// })

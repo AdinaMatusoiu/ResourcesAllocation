@@ -16,12 +16,7 @@ export default class Home extends React.Component {
     render() {
         return (
             <div>
-                home
-                <button onClick={this.logout.bind(this)}>SIGN OUT</button>
-                <button onClick={() => {
-                    http.get('/users/test').then(response => console.log(response))
-                        .catch(error => console.log(error));
-                }}>test</button>
+                HOME
             </div>
         )
     }
