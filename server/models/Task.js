@@ -8,7 +8,14 @@ const Task = db.define('task', {
         primaryKey: true,
         autoIncrement: true
     },
-    user_id: {
+    resource_id: {
+        type: Sequelize.INTEGER,
+        references: {
+            model: User,
+            key: 'id',
+        }
+    },
+    creator_id: {
         type: Sequelize.INTEGER,
         references: {
             model: User,
@@ -21,10 +28,7 @@ const Task = db.define('task', {
     description: Sequelize.STRING,
     priority: Sequelize.STRING,
     deadline: Sequelize.DATE,
-    creation_date: Sequelize.DATE
-}, {
-        timestamps: false,
-    });
+});
 
 
 module.exports = Task;

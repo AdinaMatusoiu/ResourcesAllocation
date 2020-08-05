@@ -1,6 +1,7 @@
 const route = require('express').Router();
-const auth = require('../auth');
+const { authenticated, managerPermission } = require('../auth');
 const Task = require('../models/Task');
+const User = require('../models/User');
 
 const enums = {
     type: ['bugfix', 'issue', 'feature'],
@@ -8,33 +9,29 @@ const enums = {
     priority: ['low', 'medium', 'high_on_mushrooms'],
 }
 
-route.get('/enums', auth, (_, res) => {
+route.get('/enums', authenticated, (_, res) => {
     res.send(enums)
 })
 
-route.post('/', auth, (req, res) => {
-    const { user_id, user_role } = req.decoded;
-    if (user_role === 'manager') {
-        const { name, description, status, type, priority } = req.body;
-        if (name && description && status && type && priority && enums.type.indexOf(type) !== -1 && enums.status.indexOf(status) !== -1 && enums.priority.indexOf(priority) !== -1) {
-            Task.findOne({ where: { user_id, name } }).then(task => {
-                if (!task) {
-                    Task.create({ name, description, status, type, priority, user_id })
-                        .then(() => res.status(201).send())
-                        .catch(err => {
-                            console.log(err);
-                            res.status(500).send({ message: 'Internal server error' });
-                        })
-                } else {
-                    res.status(409).send({ message: 'A task with this name already exists!' });
-                }
-            })
 
-        } else {
-            res.status(400).send({ message: 'Wrong body format' });
-        }
+route.post('/', managerPermission, (req, res) => {
+    const { user_id } = req.decoded;
+    const { name, description, type, priority } = req.body;
+    if (name && description && type && priority && enums.type.indexOf(type) !== -1 && enums.priority.indexOf(priority) !== -1) {
+        Task.findOne({ where: { creator_id: user_id, name } }).then(task => {
+            if (!task) {
+                Task.create({ name, description, type, priority, status: 'open', creator_id: user_id })
+                    .then(() => res.status(201).send())
+                    .catch(err => {
+                        console.log(err);
+                        res.status(500).send({ message: 'Internal server error!' });
+                    })
+            } else {
+                res.status(409).send({ message: 'A task with this name already exists!' });
+            }
+        })
     } else {
-        res.status(401).send();
+        res.status(400).send({ message: 'Wrong body format' });
     }
 })
 

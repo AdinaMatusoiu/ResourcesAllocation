@@ -10,6 +10,7 @@ export default class Tasks extends React.Component {
         this.state = {
             showModal: false,
             tasks: [],
+            resources: [],
             currentTask: null,
             enums: {
                 type: [],
@@ -22,6 +23,14 @@ export default class Tasks extends React.Component {
     componentDidMount() {
         http.get('/tasks/enums').then(data => {
             this.setState({ enums: data });
+        })
+        http.get('/users/manager/resources').then(resources => {
+            this.setState({ resources });
+            console.log('resources:', resources);
+        })
+        http.get('/users/manager/tasks').then(tasks => {
+            this.setState({ tasks });
+            console.log('tasks:', tasks);
         })
     }
 
@@ -46,13 +55,21 @@ export default class Tasks extends React.Component {
     }
 
     render() {
-        return (
-            <div>
-                <Button variant="primary" onClick={this.handleShow.bind(this)}>
-                    + Create
-                </Button>
-                <TaskModal show={this.state.showModal} data={this.state.currentTask} enums={this.state.enums} onClose={this.handleClose.bind(this)} onSave={this.handleSave.bind(this)} />
-            </div>
-        )
+        if (localStorage.getItem('user_role') === 'manager') {
+            return (
+                <div>
+                    <Button variant="primary" onClick={this.handleShow.bind(this)}>
+                        + Create
+                    </Button>
+                    <TaskModal show={this.state.showModal} data={this.state.currentTask} enums={this.state.enums} onClose={this.handleClose.bind(this)} onSave={this.handleSave.bind(this)} />
+                </div>
+            )
+        } else {
+            return (
+                <div>
+                    tasks for resources;
+                </div>
+            )
+        }
     }
 }

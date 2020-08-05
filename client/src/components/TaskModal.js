@@ -9,7 +9,6 @@ export default class TaskModal extends React.Component {
         this.state = {
             name: '',
             description: '',
-            status: '',
             type: '',
             priority: '',
             message: '',
@@ -37,14 +36,14 @@ export default class TaskModal extends React.Component {
     }
 
     handleSave() {
-        const { name, description, status, type, priority } = this.state;
+        const { name, description, type, priority } = this.state;
 
-        if (name && description && status && type && priority && this.props.enums.type.indexOf(type) !== -1 && this.props.enums.status.indexOf(status) !== -1 && this.props.enums.priority.indexOf(priority) !== -1) {
+        if (name && description && type && priority && this.props.enums.type.indexOf(type) !== -1 && this.props.enums.priority.indexOf(priority) !== -1) {
             this.setState({
                 name: '',
                 description: '',
             });
-            this.props.onSave({ name, description, status, type, priority });
+            this.props.onSave({ name, description, type, priority });
         } else {
             console.log(this.state);
             this.setState({ message: 'Please fill all fields!' });
@@ -68,12 +67,6 @@ export default class TaskModal extends React.Component {
                         <div>
                             <label>Description:</label>
                             <textarea value={this.state.description} onChange={e => this.handleFormChange(e, 'description')} name="textarea"></textarea>
-                        </div>
-                        <div>
-                            <label>Status:</label>
-                            <select value={this.state.status} onChange={e => this.handleFormChange(e, 'status')}>
-                                {this.props.enums.status.map((status, index) => <option key={index} value={status}>{status}</option>)}
-                            </select>
                         </div>
                         <div>
                             <label>Type:</label>
