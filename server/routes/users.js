@@ -28,13 +28,24 @@ route.post('/login', (req, res) => {
     })
 })
 
+route.get('/managers', (req, res) => {
+    User.findAll({ where: { user_role: 'manager' }, attributes: ['id', 'name'] })
+        .then(users => res.send(users))
+        .catch(err => {
+            console.log(err);
+            res.status(500).send({ message: 'Internal server error!' });
+        })
+})
+
 route.post('/register', (req, res) => {
-    User.findOne({ where: { email: req.body.email } }).then(function (user) {
+    console.log(req.body);
+    const { name, email, password, user_role, manager_id } = req.body;
+    User.findOne({ where: { email } }).then(function (user) {
         if (user) {
             res.send({ message: 'Email already exists' });
         } else {
-            bcrypt.hash(req.body.password, saltRounds).then(function (hash) {
-                User.create({ email: req.body.email, password_hash: hash, user_role: 'resource' }).then(function () {
+            bcrypt.hash(password, saltRounds).then(function (hash) {
+                User.create({ name, email, password_hash: hash, user_role, manager_id }).then(function () {
                     res.send({ message: 'Success!!' });
                 }).catch(err => {
                     console.log(err);

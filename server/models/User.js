@@ -7,12 +7,14 @@ const User = db.define('user', {
     primaryKey: true,
     autoIncrement: true
   },
+  name: Sequelize.STRING,
   email: Sequelize.STRING,
   password_hash: Sequelize.STRING,
-  user_role: Sequelize.STRING
+  user_role: Sequelize.STRING,
+  manager_id: Sequelize.INTEGER,
 }, {
-  timestamps: false,
-});
+    timestamps: false,
+  });
 
 
 // users: id, email, password, manager_id
