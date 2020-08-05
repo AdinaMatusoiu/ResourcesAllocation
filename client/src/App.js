@@ -14,36 +14,45 @@ import NavigationBar from './components/NavigationBar';
 import Tasks from './components/views/Tasks';
 import Reports from './components/views/Reports';
 import Contact from './components/views/Contact';
+import ToastWrapper from './components/ToastWrapper';
 
 export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.toastRef = React.createRef();
+  }
+
   render() {
     return (
-      <Router history={history}>
-        <NavigationBar />
-        <Switch>
-          <Route path="/" exact>
-            <Home />
-          </Route>
-          <Route path="/register">
-            <Register />
-          </Route>
-          <Route path="/login">
-            <Login />
-          </Route>
-          <Route path="/home">
-            <Protected Component={Home} />
-          </Route>
-          <Route path="/tasks">
-            <Protected Component={Tasks} />
-          </Route>
-          <Route path="/reports">
-            <Reports />
-          </Route>
-          <Route path="/contact">
-            <Contact />
-          </Route>
-        </Switch>
-      </Router>
+      <>
+        <Router history={history}>
+          <NavigationBar />
+          <Switch>
+            <Route path="/" exact>
+              <Home />
+            </Route>
+            <Route path="/register">
+              <Register toastRef={this.toastRef} />
+            </Route>
+            <Route path="/login">
+              <Login toastRef={this.toastRef} />
+            </Route>
+            <Route path="/home">
+              <Protected Component={Home} />
+            </Route>
+            <Route path="/tasks">
+              <Protected Component={Tasks} toastRef={this.toastRef} />
+            </Route>
+            <Route path="/reports">
+              <Reports />
+            </Route>
+            <Route path="/contact">
+              <Contact />
+            </Route>
+          </Switch>
+        </Router>
+        <ToastWrapper ref={this.toastRef} />
+      </>
     );
   }
 }

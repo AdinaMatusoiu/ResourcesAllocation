@@ -5,6 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-size: 1.5em;
 }
 
 .link {
@@ -29,6 +30,15 @@ a.nostyle:visited {
   text-decoration: inherit;
   color: inherit;
   cursor: auto;
+}
+
+form {
+  width: 40%;
+  margin: auto;
+}
+form input {
+  margin: auto;
+  width: 70%;
 }
 
 code {
