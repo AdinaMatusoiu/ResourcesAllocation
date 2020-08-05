@@ -15,7 +15,10 @@ const Comment = require('./Comment');
 // daca selectul asta intoarce ceva, emailul nu e unic.
 // daca intoarce null/undefined, emailul este unic (adica nu mai exista).
 
-User.hasMany(Task, { as: 'tasks', foreignKey: 'user_id' });
-Task.belongsTo(User, { as: 'user', foreignKey: 'user_id' });
+User.hasMany(Task, { as: 'assignedTasks', foreignKey: 'resource_id' });
+Task.belongsTo(User, { as: 'resource', foreignKey: 'resource_id' });
+User.hasMany(Task, { as: 'createdTasks', foreignKey: 'creator_id' });
+Task.belongsTo(User, { as: 'manager', foreignKey: 'creator_id' });
+
 User.hasMany(Comment, { as: 'comments', foreignKey: 'user_id' });
 Comment.belongsTo(User, { as: 'user', foreignKey: 'user_id' });
