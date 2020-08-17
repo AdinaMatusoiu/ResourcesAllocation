@@ -8,7 +8,6 @@ const enums = {
     type: ['bugfix', 'issue', 'feature'],
     status: ['open', 'closed'],
     priority: ['low', 'medium', 'high_on_mushrooms'],
-    category: ['closed', 'in progress', 'low', 'medium', 'high'],
 }
 
 route.get('/enums', authenticated, (_, res) => {
