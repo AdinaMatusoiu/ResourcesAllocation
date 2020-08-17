@@ -53,6 +53,19 @@ route.get('/manager/tasks', managerPermission, (req, res) => {
         })
 })
 
+route.get('/resources/tasks', (req, res) => {
+    const { user_id } = req.decoded;
+    Task.findAll({ where: { creator_id: user_id } })
+        .then(tasks => {
+            res.send(tasks);
+        }).catch(error => {
+            console.log(error);
+            res.status(500).send({ message: 'Internal server error!' });
+        })
+})
+
+
+
 route.get('/managers', (req, res) => {
     User.findAll({ where: { user_role: 'manager' }, attributes: ['id', 'name'] })
         .then(users => res.send(users))

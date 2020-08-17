@@ -67,7 +67,48 @@ export default class Tasks extends React.Component {
         } else {
             return (
                 <div>
-                    tasks for resources;
+<table class="table table-striped table-dark">
+      <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">NAME</th>
+      <th scope="col">TYPE</th>
+      <th scope="col">STATUS</th>
+      <th scope="col">DESCRIPTION</th>
+     <th scope="col">PRIORITY</th>
+      <th scope="col">DEADLINE</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="bg-warning">
+      <th scope="row">1</th>
+      <td>LE WRONG THING</td>
+      <td>blabla</td>
+      <td>open</td>
+      <td>high</td>
+      <td>open</td>
+      <td>5-0-9232</td>
+      <Button variant="primary btn-lg" onClick={this.handleShow.bind(this)}>
+                       Close task
+                    </Button>
+    </tr>
+    <tr>
+      <th scope="row">2</th>
+      <td></td>
+    </tr>
+    <tr class="bg-danger">
+      <th scope="row">3</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+
+    </tr>
+  </tbody>
+</table>
                 </div>
             )
         }

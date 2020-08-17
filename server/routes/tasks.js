@@ -3,10 +3,12 @@ const { authenticated, managerPermission } = require('../auth');
 const Task = require('../models/Task');
 const User = require('../models/User');
 
+
 const enums = {
     type: ['bugfix', 'issue', 'feature'],
     status: ['open', 'closed'],
     priority: ['low', 'medium', 'high_on_mushrooms'],
+    category: ['closed', 'in progress', 'low', 'medium', 'high'],
 }
 
 route.get('/enums', authenticated, (_, res) => {
@@ -34,5 +36,14 @@ route.post('/', managerPermission, (req, res) => {
         res.status(400).send({ message: 'Wrong body format' });
     }
 })
+
+// router.get('/tasks', (req, res) => {
+//     Task.findAll().then(task => {
+//         res.send(task);
+//     }).catch(error => {
+//         console.log(error);
+//         res.status(500).send({ message: 'Something went wrong. Try again later.' })
+//     });
+// })
 
 module.exports = route;

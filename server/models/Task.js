@@ -28,6 +28,7 @@ const Task = db.define('task', {
     description: Sequelize.STRING,
     priority: Sequelize.STRING,
     deadline: Sequelize.DATE,
+    category: Sequelize.STRING,
 });
 
 
