@@ -44,7 +44,7 @@ export default class App extends React.Component {
               <Protected Component={Tasks} toastRef={this.toastRef} />
             </Route>
             <Route path="/reports">
-              <Reports />
+              {localStorage.getItem('user_role') === 'manager' ? <Reports /> : <Protected Component={Home} />}
             </Route>
             <Route path="/contact">
               <Contact />
