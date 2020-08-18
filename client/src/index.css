@@ -45,3 +45,31 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+#tasks.table { 
+  width: 78%; 
+  border-collapse: collapse; 
+  border: 1px solid black;
+  margin-top:0.0px;
+  margin-left:270px
+}
+
+#res.table { 
+  margin-top:-270px;
+  width: 2.5%; 
+  border: 1px solid black;
+  border-collapse: collapse; 
+  
+}
+th { 
+  background: rgb(2, 0, 0); 
+  color: white; 
+  font-weight: bold; 
+}
+td { 
+  font-style: italic;
+  padding: 6px; 
+  background: rgb(red, green, blue);
+  border: 1px solid; 
+  text-align: left; 
+}
