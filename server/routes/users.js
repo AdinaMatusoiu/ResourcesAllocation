@@ -6,6 +6,7 @@ const Task = require('../models/Task');
 const saltRounds = require('../config/config').saltRounds;
 const { secret } = require('../config/config');
 const { managerPermission } = require('../auth');
+const db = require('../config/db');
 
 route.post('/login', (req, res) => {
     User.findOne({ where: { email: req.body.email }, raw: true }).then(user => {
@@ -30,12 +31,14 @@ route.post('/login', (req, res) => {
     })
 })
 
+// SELECT C.ClassId, C.ClassName, count(S.StudentId) AS studentCount
+// FROM CLASSES C LEFT JOIN STUDENTS S ON (C.ClassId=S.ClassId)
+// GROUP BY C.ClassId, C.ClassName
+
 route.get('/manager/resources', managerPermission, (req, res) => {
     const { user_id } = req.decoded;
-    User.findAll({ attributes: ['id', 'name', 'email'], where: { manager_id: user_id } })
-        .then(users => {
-            res.send(users);
-        })
+    db.query('select u.id, u.name, u.email, count(t.id) as no_tasks from users u left join tasks t on u.id=t.resource_id where u.manager_id = ? group by u.id, u.name', { replacements: [user_id], type: db.QueryTypes.SELECT })
+        .then(resources => res.send(resources))
         .catch(error => {
             console.log(error);
             res.status(500).send({ message: 'Internal server error!' });
@@ -44,7 +47,7 @@ route.get('/manager/resources', managerPermission, (req, res) => {
 
 route.get('/manager/tasks', managerPermission, (req, res) => {
     const { user_id } = req.decoded;
-    Task.findAll({ where: { creator_id: user_id } })
+    Task.findAll({ where: { creator_id: user_id, resource_id: null } })
         .then(tasks => {
             res.send(tasks);
         }).catch(error => {

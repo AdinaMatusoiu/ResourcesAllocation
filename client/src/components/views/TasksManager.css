@@ -1,0 +1,13 @@
+th{ position: sticky; top: 0; }
+
+.clickable {
+    cursor: pointer;
+}
+
+.clickable :hover {
+    opacity: 50%;
+}
+
+td {
+    height: 2em;
+}
