@@ -10,7 +10,7 @@ export default class Reports extends React.Component {
         if (localStorage.getItem('user_role') === 'manager') {
             return (
                 <div>
-     <table class="table table-dark">
+     <table className="table table-dark">
       <thead>
     <tr>
       <th scope="col">Task owner</th>
