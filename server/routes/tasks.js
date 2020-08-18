@@ -37,6 +37,17 @@ route.post('/', managerPermission, (req, res) => {
     }
 })
 
+route.put('/', managerPermission, (req, res) => {
+    console.log(req.body);
+    const { resource_id, task_id } = req.body;
+    Task.update({ resource_id }, { where: { id: task_id } })
+        .then(() => res.status(200).send())
+        .catch(err => {
+            console.log(err);
+            res.status(500).send({ message: 'Internal server error!' });
+        })
+})
+
 // router.get('/tasks', (req, res) => {
 //     Task.findAll().then(task => {
 //         res.send(task);

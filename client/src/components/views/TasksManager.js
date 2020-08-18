@@ -73,8 +73,7 @@ export default class TasksManager extends React.Component {
                 }
                 this.setState({ tasks });
                 this.props.toastRef.current.show('Task created', '', 3000);
-            })
-            .catch(error => {
+            }).catch(error => {
                 console.log(error);
                 this.props.toastRef.current.show('', error.data.message, 3000);
             })
@@ -85,12 +84,19 @@ export default class TasksManager extends React.Component {
         const index = this.getChildIndex(event.target.parentNode);
         event.target.parentNode.style.opacity = '100%';
         const { tasks, resources } = this.state;
-        tasks.splice(this.state.dragTaskIndex, 1);
-        if (tasks.length < 4) {
-            tasks.push(null);
-        }
-        resources[index].no_tasks++;
-        this.setState({ tasks, resources });
+        http.put('/tasks', { task_id: tasks[this.state.dragTaskIndex].id, resource_id: resources[index].id })
+            .then(() => {
+                tasks.splice(this.state.dragTaskIndex, 1);
+                if (tasks.length < 4) {
+                    tasks.push(null);
+                }
+                resources[index].no_tasks++;
+                this.setState({ tasks, resources });
+                this.props.toastRef.current.show('Task successfully assigned!', '', 3000);
+            }).catch(error => {
+                console.log(error);
+                this.props.toastRef.current.show('', error.data.message, 3000);
+            })
 
     }
 
