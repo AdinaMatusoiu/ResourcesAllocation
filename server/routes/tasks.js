@@ -17,12 +17,13 @@ route.get('/enums', authenticated, (_, res) => {
 
 route.post('/', managerPermission, (req, res) => {
     const { user_id } = req.decoded;
-    const { name, description, type, priority } = req.body;
+    const { name, description, type, priority, deadline } = req.body;
+    console.log(req.body);
     if (name && description && type && priority && enums.type.indexOf(type) !== -1 && enums.priority.indexOf(priority) !== -1) {
         Task.findOne({ where: { creator_id: user_id, name } }).then(task => {
             if (!task) {
-                Task.create({ name, description, type, priority, status: 'open', creator_id: user_id })
-                    .then(() => res.status(201).send())
+                Task.create({ name, description, type, priority, status: 'open', creator_id: user_id, deadline })
+                    .then(created => res.status(201).send(created))
                     .catch(err => {
                         console.log(err);
                         res.status(500).send({ message: 'Internal server error!' });
@@ -34,6 +35,17 @@ route.post('/', managerPermission, (req, res) => {
     } else {
         res.status(400).send({ message: 'Wrong body format' });
     }
+})
+
+route.put('/', managerPermission, (req, res) => {
+    console.log(req.body);
+    const { resource_id, task_id } = req.body;
+    Task.update({ resource_id }, { where: { id: task_id } })
+        .then(() => res.status(200).send())
+        .catch(err => {
+            console.log(err);
+            res.status(500).send({ message: 'Internal server error!' });
+        })
 })
 
 // router.get('/tasks', (req, res) => {

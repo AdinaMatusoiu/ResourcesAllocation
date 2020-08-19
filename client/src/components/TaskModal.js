@@ -1,6 +1,7 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
-import './TaskModal.css'
+import './TaskModal.css';
+import DatePicker from 'react-date-picker';
 
 export default class TaskModal extends React.Component {
 
@@ -11,6 +12,7 @@ export default class TaskModal extends React.Component {
             description: '',
             type: '',
             priority: '',
+            deadline: null,
             message: '',
         }
     }
@@ -36,18 +38,21 @@ export default class TaskModal extends React.Component {
     }
 
     handleSave() {
-        const { name, description, type, priority } = this.state;
+        const { name, description, type, priority, deadline } = this.state;
 
         if (name && description && type && priority && this.props.enums.type.indexOf(type) !== -1 && this.props.enums.priority.indexOf(priority) !== -1) {
             this.setState({
                 name: '',
                 description: '',
             });
-            this.props.onSave({ name, description, type, priority });
+            this.props.onSave({ name, description, type, priority, deadline: deadline ? deadline.toLocaleDateString() : null });
         } else {
-            console.log(this.state);
             this.setState({ message: 'Please fill all fields!' });
         }
+    }
+
+    onDateChange(value) {
+        this.setState({ deadline: value });
     }
 
     render() {
@@ -79,6 +84,10 @@ export default class TaskModal extends React.Component {
                             <select value={this.state.priority} onChange={e => this.handleFormChange(e, 'priority')}>
                                 {this.props.enums.priority.map((priority, index) => <option key={index} value={priority}>{priority}</option>)}
                             </select>
+                        </div>
+                        <div>
+                            <label>Deadline:</label>
+                            <DatePicker onChange={this.onDateChange.bind(this)} value={this.state.deadline} minDate={new Date()} />
                         </div>
                         <p style={{ textAlign: 'center', color: 'red' }}>{this.state.message}</p>
                     </Modal.Body>
