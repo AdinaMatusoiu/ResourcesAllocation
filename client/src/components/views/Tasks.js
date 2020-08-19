@@ -73,13 +73,13 @@ export default class Tasks extends React.Component {
                  </tr>
             </thead>
             <tbody>
-                 
-                    <td>{this.state.tasks.map(task=> <div key={task.id}>{task.id}</div>)}</td>
-                    <td>{this.state.tasks.map(task=> <div key={task.id}>{task.name}</div>)}</td>
-                    <td>{this.state.tasks.map(task=> <div key={task.id}>{task.type}</div>)}</td>
-                    <td>{this.state.tasks.map(task=> <div key={task.id}>{task.status}</div>)}</td>
-                    <td>{this.state.tasks.map(task=> <div key={task.id}>{task.description}</div>)}</td>
-                    <td>{this.state.tasks.map(task=> <div key={task.id}>{task.priority}</div>)}</td>
+                 <tr>
+            <td>{this.state.tasks.map(task=> <div key={task.id}>
+                {task.id}
+               </div>)
+                }
+                </td>
+            </tr>
                 
                     </tbody>
                     </table>
@@ -117,12 +117,7 @@ export default class Tasks extends React.Component {
             </thead>
             <tbody>
                  
-                    <td>{this.state.tasks.map(task=> <div key={task.id}>{task.id}</div>)}</td>
-                    <td>{this.state.tasks.map(task=> <div key={task.id}>{task.name}</div>)}</td>
-                    <td>{this.state.tasks.map(task=> <div key={task.id}>{task.type}</div>)}</td>
-                    <td>{this.state.tasks.map(task=> <div key={task.id}>{task.status}</div>)}</td>
-                    <td>{this.state.tasks.map(task=> <div key={task.id}>{task.description}</div>)}</td>
-                    <td>{this.state.tasks.map(task=> <div key={task.id}>{task.priority}</div>)}</td>
+                
          </tbody>
 </table>
                 </div>
