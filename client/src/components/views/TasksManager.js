@@ -149,7 +149,7 @@ export default class TasksManager extends React.Component {
                         </tbody>
                     </table>
                 </div>
-                <div style={{ width: '45%', height: '400px', overflowY: 'scroll' }}>
+                <div style={{ width: '45%', height: '400px', overflowY: 'scroll', marginLeft: '600px', marginTop: '-300px', }}>
                     <table className="table table-stripped table-dark">
                         <thead>
                             <tr>
