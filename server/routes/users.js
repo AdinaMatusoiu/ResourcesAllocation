@@ -5,7 +5,7 @@ const User = require('../models/User');
 const Task = require('../models/Task');
 const saltRounds = require('../config/config').saltRounds;
 const { secret } = require('../config/config');
-const { managerPermission } = require('../auth');
+const { managerPermission, authenticated } = require('../auth');
 const db = require('../config/db');
 
 route.post('/login', (req, res) => {
@@ -56,9 +56,9 @@ route.get('/manager/tasks', managerPermission, (req, res) => {
         })
 })
 
-route.get('/resources/tasks', (req, res) => {
+route.get('/resources/tasks', authenticated, (req, res) => {
     const { user_id } = req.decoded;
-    Task.findAll({ where: { creator_id: user_id } })
+    Task.findAll({ where: { resource_id: user_id } })
         .then(tasks => {
             res.send(tasks);
         }).catch(error => {

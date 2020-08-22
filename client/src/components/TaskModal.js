@@ -39,7 +39,6 @@ export default class TaskModal extends React.Component {
 
     handleSave() {
         const { name, description, type, priority, deadline } = this.state;
-        console.log(deadline.toLocaleDateString());
         if (name && description && type && priority && this.props.enums.type.indexOf(type) !== -1 && this.props.enums.priority.indexOf(priority) !== -1) {
             this.setState({
                 name: '',

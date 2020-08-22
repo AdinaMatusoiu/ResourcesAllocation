@@ -15,6 +15,7 @@ import Tasks from './components/views/Tasks';
 import Reports from './components/views/Reports';
 import Contact from './components/views/Contact';
 import ToastWrapper from './components/ToastWrapper';
+import Task from './components/Task';
 
 export default class App extends React.Component {
   constructor(props) {

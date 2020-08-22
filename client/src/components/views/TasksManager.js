@@ -10,7 +10,7 @@ export default class TasksManager extends React.Component {
         super(props);
         this.state = {
             showModal: false,
-            tasks: [null, null, null, null],
+            tasks: [null, null, null, null, null, null],
             resources: [null, null, null, null, null, null],
             currentTask: null,
             dragTaskIndex: null,
@@ -39,7 +39,7 @@ export default class TasksManager extends React.Component {
             console.log('resources:', resources);
         })
         http.get('/users/manager/tasks').then(tasks => {
-            if (tasks.length >= 4) {
+            if (tasks.length >= 6) {
                 this.setState({ tasks });
             } else {
                 const current = this.state.tasks;
@@ -87,7 +87,7 @@ export default class TasksManager extends React.Component {
         http.put('/tasks', { task_id: tasks[this.state.dragTaskIndex].id, resource_id: resources[index].id })
             .then(() => {
                 tasks.splice(this.state.dragTaskIndex, 1);
-                if (tasks.length < 4) {
+                if (tasks.length < 6) {
                     tasks.push(null);
                 }
                 resources[index].no_tasks++;
@@ -123,57 +123,59 @@ export default class TasksManager extends React.Component {
 
     render() {
         return (
-            <div>
+            <>
                 <Button variant="primary" onClick={this.handleShow.bind(this)}>
                     + Create
                 </Button>
-                <div style={{ width: '30%', height: '300px', overflowY: 'scroll' }}>
-                    <table className="table table-striped table-dark">
-                        <thead >
-                            <tr>
-                                <th>Name</th>
-                                <th>Type</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {this.state.tasks.map((task, index) => {
-                                if (task) {
-                                    return <tr className="clickable" draggable="true" onDragStart={this.handleDragStart.bind(this)} key={index}>
-                                        <td>{task.name}</td>
-                                        <td>{task.type}</td>
-                                    </tr>
-                                } else {
-                                    return <tr key={index}><td></td><td></td></tr>
-                                }
-                            })}
-                        </tbody>
-                    </table>
+                <div style={{ display: 'flex' }}>
+                    <div style={{ width: '50%', overflowY: 'scroll', overflowX: 'hidden', margin: '0 2em 0 2em', maxHeight: '400px' }}>
+                        <table className="table table-striped table-dark">
+                            <thead >
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {this.state.tasks.map((task, index) => {
+                                    if (task) {
+                                        return <tr className="clickable" draggable="true" onDragStart={this.handleDragStart.bind(this)} key={index}>
+                                            <td>{task.name}</td>
+                                            <td>{task.type}</td>
+                                        </tr>
+                                    } else {
+                                        return <tr key={index}><td></td><td></td></tr>
+                                    }
+                                })}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style={{ width: '50%', overflowY: 'scroll', overflowX: 'hidden', margin: '0 2em 0 2em', maxHeight: '400px' }}>
+                        <table className="table table-stripped table-dark">
+                            <thead>
+                                <tr>
+                                    <th>Resource</th>
+                                    <th>No. Tasks</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {this.state.resources.map((resource, index) => {
+                                    if (resource) {
+                                        return <tr onDragEnter={this.handleDragEnter.bind(this)} onDragLeave={this.handleDragLeave.bind(this)} onDragOver={e => e.preventDefault()} onDrop={this.handleDrop.bind(this)} key={index}>
+                                            <td>{resource.name}</td>
+                                            <td>{resource.no_tasks}</td>
+                                            <td className="clickable"><Button variant="primary">See Details</Button>
+                                            </td>
+                                        </tr>
+                                    } else return <tr key={index}><td></td><td></td><td></td></tr>
+                                })}
+                            </tbody>
+                        </table>
+                    </div>
+                    <TaskModal show={this.state.showModal} data={this.state.currentTask} enums={this.state.enums} onClose={this.handleClose.bind(this)} onSave={this.handleSave.bind(this)} />
                 </div>
-                <div style={{ width: '45%', height: '400px', overflowY: 'scroll', marginLeft: '600px', marginTop: '-300px', }}>
-                    <table className="table table-stripped table-dark">
-                        <thead>
-                            <tr>
-                                <th>Resource</th>
-                                <th>No. Tasks</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {this.state.resources.map((resource, index) => {
-                                if (resource) {
-                                    return <tr onDragEnter={this.handleDragEnter.bind(this)} onDragLeave={this.handleDragLeave.bind(this)} onDragOver={e => e.preventDefault()} onDrop={this.handleDrop.bind(this)} key={index}>
-                                        <td>{resource.name}</td>
-                                        <td>{resource.no_tasks}</td>
-                                        <td className="clickable"><Button variant="primary">See Details</Button>
-                                        </td>
-                                    </tr>
-                                } else return <tr key={index}><td></td><td></td><td></td></tr>
-                            })}
-                        </tbody>
-                    </table>
-                </div>
-                <TaskModal show={this.state.showModal} data={this.state.currentTask} enums={this.state.enums} onClose={this.handleClose.bind(this)} onSave={this.handleSave.bind(this)} />
-            </div>
+            </>
         )
     }
 }
