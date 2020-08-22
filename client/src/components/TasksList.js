@@ -28,7 +28,7 @@ export default class TasksList extends React.Component {
                                 <td>{task.priority}</td>
                             </tr>)
                         } else {
-                            return <tr key={index}><td></td><td></td><td></td></tr>
+                            return <tr key={task.id}><td></td><td></td><td></td></tr>
                         }
                     }
                     )}

@@ -1,11 +1,28 @@
 import React from 'react';
+import { Button } from 'react-bootstrap';
+import WorkLogModal from './WorkLogModal';
+
 export default class Task extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            showModal: false,
+
+        }
     }
 
-    componentDidUpdate() {
-        console.log(this.props);
+    handleShow() {
+        this.setState({ showModal: true });
+    }
+
+    handleClose() {
+        this.setState({ showModal: false });
+    }
+
+    handleSave(data) {
+        console.log(data);
+        this.setState({ showModal: false });
+
     }
 
     render() {
@@ -18,6 +35,10 @@ export default class Task extends React.Component {
             <p>Open At: {this.props.createdAt ? this.props.createdAt.split('T')[0] : ''}</p>
             <h3>Description</h3>
             <p>{this.props.description}</p>
+            <Button variant="primary" onClick={this.handleShow.bind(this)} disabled={!this.props.name}>
+                Log Work
+                </Button>
+            <WorkLogModal show={this.state.showModal} onClose={this.handleClose.bind(this)} onSave={this.handleSave.bind(this)} />
         </div>)
     }
 }

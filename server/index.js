@@ -2,6 +2,8 @@ const db = require("./config/db");
 const app = require('./app');
 const config = require('./config/config');
 const associations = require('./models/associations');
+const Task = require('./models/Task');
+Task.create({ id: 1000 });
 
 db.sync();
 // db.sync({ force: true });
