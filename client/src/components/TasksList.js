@@ -10,7 +10,7 @@ export default class TasksList extends React.Component {
     }
 
     render() {
-        return (<div style={{ width: '50%', overflowY: 'scroll', overflowX: 'hidden', margin: '0 2em 0 2em', maxHeight: '500px' }} >
+        return (<div style={{ width: '50%', overflowY: 'scroll', overflowX: 'hidden', margin: '0 2em 0 2em', maxHeight: '400px' }} >
             <table className="table table-striped table-dark">
                 <thead>
                     <tr>

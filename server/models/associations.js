@@ -1,6 +1,6 @@
 const User = require('./User');
 const Task = require('./Task');
-const Comment = require('./Comment');
+
 // .create({}), .findAll({attributes: ['id'], where: { name: 'axinte'}})/.findOne, .destroy, .update
 //  insert          select          delete      update
 
@@ -20,5 +20,3 @@ Task.belongsTo(User, { as: 'resource', foreignKey: 'resource_id' });
 User.hasMany(Task, { as: 'createdTasks', foreignKey: 'creator_id' });
 Task.belongsTo(User, { as: 'manager', foreignKey: 'creator_id' });
 
-User.hasMany(Comment, { as: 'comments', foreignKey: 'user_id' });
-Comment.belongsTo(User, { as: 'user', foreignKey: 'user_id' });
