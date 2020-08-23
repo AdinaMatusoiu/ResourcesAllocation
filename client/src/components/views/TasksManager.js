@@ -62,6 +62,7 @@ export default class TasksManager extends React.Component {
 
     handleSave(data) {
         this.setState({ showModal: false })
+        console.log(data);
         http.post('/tasks', data)
             .then((created) => {
                 const { tasks } = this.state;

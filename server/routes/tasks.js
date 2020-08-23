@@ -2,7 +2,7 @@ const route = require('express').Router();
 const { authenticated, managerPermission } = require('../auth');
 const Task = require('../models/Task');
 const User = require('../models/User');
-
+const { getDate } = require('../utils');
 
 const enums = {
     type: ['bugfix', 'issue', 'feature'],
@@ -14,15 +14,13 @@ route.get('/enums', authenticated, (_, res) => {
     res.send(enums)
 })
 
-
 route.post('/', managerPermission, (req, res) => {
     const { user_id } = req.decoded;
     const { name, description, type, priority, deadline } = req.body;
-    console.log(req.body);
     if (name && description && type && priority && enums.type.indexOf(type) !== -1 && enums.priority.indexOf(priority) !== -1) {
         Task.findOne({ where: { creator_id: user_id, name } }).then(task => {
             if (!task) {
-                Task.create({ name, description, type, priority, status: 'open', creator_id: user_id, deadline })
+                Task.create({ name, description, type, priority, status: 'open', creator_id: user_id, deadline: deadline ? getDate(deadline) : null })
                     .then(created => res.status(201).send(created))
                     .catch(err => {
                         console.log(err);
