@@ -14,7 +14,6 @@ export const months = [
 ]
 
 export function getDate(dateString) {
-    console.log(dateString);
     let actualDate = new Date(dateString);
     actualDate.setHours(actualDate.getHours() + 3, 0, 0);
     return actualDate;

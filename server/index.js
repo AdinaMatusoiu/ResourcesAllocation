@@ -3,7 +3,45 @@ const app = require('./app');
 const config = require('./config/config');
 const associations = require('./models/associations');
 const Task = require('./models/Task');
-Task.create({ id: 1000 });
+const User = require('./models/User');
+const { randomIntFromInterval, getDate } = require('./utils');
+
+// const enums = {
+//     type: ['bugfix', 'issue', 'feature'],
+//     status: ['open', 'closed'],
+//     priority: ['low', 'medium', 'high_on_mushrooms'],
+// }
+
+
+// User.findAll({ where: { user_role: 'resource' }, raw: true })
+//     .then(resources => {
+//         resources.forEach(resource => {
+//             [0, 1, 2, 3, 4, 5, 6, 7].forEach(monthIndex => {
+//                 for (let i = 1; i <= 29; i++) {
+//                     const noTasksCurrentDay = randomIntFromInterval(3, 8);
+//                     for (let j = 0; j < noTasksCurrentDay; j++) {
+//                         let creation_date = new Date(2020, monthIndex, i);
+//                         creation_date = getDate(new Date(creation_date).toLocaleDateString('en-US'));
+//                         let closed_date = new Date(2020, monthIndex, i + randomIntFromInterval(0, 4));
+//                         closed_date = getDate(new Date(closed_date).toLocaleDateString('en-US'));
+//                         let deadline = new Date(2020, monthIndex, i + randomIntFromInterval(0, 3));
+//                         deadline = getDate(new Date(deadline).toLocaleDateString('en-US'));
+//                         Task.create({
+//                             resource_id: resource.id,
+//                             creator_id: 1,
+//                             name: `${resource.name}_${monthIndex}_${i}_${j}`,
+//                             status: 'closed',
+//                             priority: enums.priority[randomIntFromInterval(-1, 3)],
+//                             creation_date,
+//                             closed_date,
+//                             deadline
+//                         })
+//                     }
+//                 }
+//             })
+//         })
+//     })
+
 
 db.sync();
 // db.sync({ force: true });
