@@ -37,8 +37,10 @@ route.post('/login', (req, res) => {
 
 route.get('/manager/resources', managerPermission, (req, res) => {
     const { user_id } = req.decoded;
-    db.query('select u.id, u.name, u.email, count(t.id) as no_tasks from users u left join tasks t on u.id=t.resource_id where u.manager_id = ? group by u.id, u.name', { replacements: [user_id], type: db.QueryTypes.SELECT })
-        .then(resources => res.send(resources))
+    db.query('select u.id, u.name, u.email, count(t.id) as no_tasks from users u left join tasks t on u.id=t.resource_id and t.status=\'open\' where u.manager_id = ? group by u.id, u.name', { replacements: [user_id], type: db.QueryTypes.SELECT })
+        .then(resources => {
+            res.send(resources)
+        })
         .catch(error => {
             console.log(error);
             res.status(500).send({ message: 'Internal server error!' });

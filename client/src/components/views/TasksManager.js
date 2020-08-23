@@ -30,13 +30,12 @@ export default class TasksManager extends React.Component {
             if (resources.length >= 6) {
                 this.setState({ resources });
             } else {
-                const current = this.state.resources;
+                const current = [...this.state.resources];
                 resources.forEach((resource, index) => {
                     current[index] = resource;
                 });
                 this.setState({ resources: current });
             }
-            console.log('resources:', resources);
         })
         http.get('/users/manager/tasks').then(tasks => {
             if (tasks.length >= 6) {
