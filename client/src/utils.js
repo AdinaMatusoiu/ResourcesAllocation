@@ -14,6 +14,7 @@ export const months = [
 ]
 
 export function getDate(dateString) {
+    console.log(dateString);
     let actualDate = new Date(dateString);
     actualDate.setHours(actualDate.getHours() + 3, 0, 0);
     return actualDate;
@@ -26,5 +27,5 @@ export function getDaysInMonth(month, year) {
         days.push(new Date(date));
         date.setDate(date.getDate() + 1);
     }
-    return days.map(day => getDate(new Date(day).toLocaleDateString()))
+    return days.map(day => getDate(new Date(day).toLocaleDateString('en-US')))
 }

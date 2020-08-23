@@ -20,7 +20,7 @@ import { months, getDaysInMonth } from '../../utils';
 //   },
 
 // ];
-const days = getDaysInMonth(1, 2020);
+const days = getDaysInMonth(7, 2020);
 const data = days.map(day => { return { name: day.getDate(), uv: 4, pv: 3 } })
 
 
@@ -73,7 +73,7 @@ export default class Reports extends PureComponent {
       return (
         <div>
           repooo
-                </div>
+        </div>
       )
     }
   }
