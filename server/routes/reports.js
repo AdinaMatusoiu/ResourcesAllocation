@@ -13,7 +13,7 @@ route.get('/', managerPermission, (req, res) => {
         Promise.all(resources = resources.map(resource => {
             return db.query(`select mydates.mydate as date, count(tasks.id) as no_tasks from mydates
             left join tasks on mydates.mydate = tasks.creation_date and tasks.resource_id = ${resource.id}
-            where month(mydates.mydate) = ${month + 1} and tasks.status='${status}' group by mydates.mydate`, { type: db.QueryTypes.SELECT }).then(data => {
+            where month(mydates.mydate) = ${month} and tasks.status='${status}' group by mydates.mydate`, { type: db.QueryTypes.SELECT }).then(data => {
                 data = data.map(elem => {
                     elem.date = elem.date.split('-')[2];
                     return elem
