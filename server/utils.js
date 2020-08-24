@@ -9,6 +9,8 @@ function randomIntFromInterval(min, max) { // min and max included
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
+const colors = ['red', 'blue', 'green', 'yellow', 'black', 'purple', 'pink', 'brown'];
+
 const Colors = {
     names: {
         aqua: "#00ffff",
@@ -58,5 +60,5 @@ const Colors = {
 };
 
 module.exports = {
-    getDate, randomIntFromInterval, Colors
+    getDate, randomIntFromInterval, Colors, colors
 }

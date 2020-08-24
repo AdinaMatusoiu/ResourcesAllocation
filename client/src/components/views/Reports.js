@@ -1,48 +1,9 @@
 import React, { PureComponent } from 'react';
-import { Button, Form } from 'react-bootstrap';
 import http from '../../http';
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
 } from 'recharts';
-import { months, getDaysInMonth } from '../../utils';
-
-// const days = getDaysInMonth(7, 2020);
-// const data = days.map(day => { return { name: day.getDate(), uv: 4, pv: 3 } })
-const data = [
-  { date: '1/08/2020', 'no_tasks': 5, 'name': 'Marcel' },
-  { date: '2/08/2020', 'no_tasks': 3, 'name': 'Ionel' },
-  { date: '3/08/2020', 'no_tasks': 5, name: 'Adina' },
-  { date: '4/08/2020', 'no_tasks': 7, 'name': 'Cosmin' },
-  // { date: '5/08/2020', 'no_tasks': 1 },
-  // { date: '6/08/2020', 'no_tasks': 9 },
-]
-
-const series = [
-  {
-    name: 'Marcel',
-    data: [
-      { date: '1/01/2020', no_tasks: Math.random() },
-      { date: '2/01/2020', no_tasks: Math.random() },
-      { date: '3/01/2020', no_tasks: Math.random() },
-    ],
-  },
-  {
-    name: 'Ionel',
-    data: [
-      { date: '1/01/2020', no_tasks: Math.random() },
-      { date: '2/01/2020', no_tasks: Math.random() },
-      { date: '3/01/2020', no_tasks: Math.random() },
-    ],
-  },
-  {
-    name: 'Adina',
-    data: [
-      { date: '1/01/2020', no_tasks: Math.random() },
-      { date: '2/01/2020', no_tasks: Math.random() },
-      { date: '3/01/2020', no_tasks: Math.random() },
-    ],
-  },
-];
+import { months } from '../../utils';
 
 export default class Reports extends PureComponent {
   constructor(props) {
@@ -53,12 +14,11 @@ export default class Reports extends PureComponent {
       data: [],
       resources: [{ id: 1000 }, { id: 1001 }, { id: 1002 }, { id: 1003 }, { id: 1004 }, { id: 1005 }],
     };
-    this.getTable = this.getTable.bind(this);
+    this.getData = this.getData.bind(this);
   }
 
   componentDidMount() {
     http.get('/users/manager/resources').then(data => {
-      console.log(data);
       if (data.length >= 6) {
         this.setState({ resources: data });
       } else {
@@ -71,32 +31,37 @@ export default class Reports extends PureComponent {
     })
   }
 
-  componentDidUpdate() {
-    if (this.state.status && this.state.selectedMonth && this.state.resources.filter(elem => elem.selected).length) {
-      this.getTable();
+  handleResourceSelection(index) {
+    const copy = [...this.state.resources];
+    copy[index].selected = !copy[index].selected;
+    this.setState({ resources: copy });
+    if (this.state.selectedMonth && this.state.status) {
+      this.getData(this.state.selectedMonth, this.state.status, copy.filter(elem => elem.selected).map(elem => elem.id)).then(data => {
+        this.setState({ data });
+      })
     }
   }
 
   handleMonthChange(event) {
     this.setState({ selectedMonth: +event.target.value });
-  }
-
-  handleResourceSelection(index) {
-    const copy = [...this.state.resources];
-    copy[index].selected = !copy[index].selected;
-    this.setState({ resources: copy });
-
+    if (this.state.resources.filter(elem => elem.selected).length && this.state.status) {
+      this.getData(+event.target.value, this.state.status, this.state.resources.filter(elem => elem.selected).map(elem => elem.id)).then(data => this.setState({ data }));
+    }
   }
 
   handleStatusChange(event) {
     this.setState({ status: event.target.value });
+    if (this.state.resources.filter(elem => elem.selected).length && this.state.selectedMonth) {
+      this.getData(this.state.selectedMonth, event.target.value, this.state.resources.filter(elem => elem.selected).map(elem => elem.id)).then(data => this.setState({ data }));
+    }
   }
 
-  getTable() {
-    const resource_ids = this.state.resources.filter(elem => elem.selected).map(elem => elem.id);
-    http.get(`/reports/?month=${this.state.selectedMonth}&status=${this.state.status}&resource_ids=${resource_ids.join(',')}`).then(data => {
+  getData(month, status, resource_ids) {
+    console.log(month, status, resource_ids);
+    // const resource_ids = this.state.resources.filter(elem => elem.selected).map(elem => elem.id);
+    return http.get(`/reports/?month=${month}&status=${status}&resource_ids=${resource_ids.join(',')}`).then(data => {
       console.log(data);
-      this.setState({ data });
+      return data;
     }).catch(error => {
       console.log(error);
     })
@@ -106,8 +71,6 @@ export default class Reports extends PureComponent {
     if (localStorage.getItem('user_role') === 'manager') {
       return (
         <>
-          <button onClick={this.getTable.bind(this)}>get table</button>
-          <button onClick={() => console.log(this.state)}>check state</button>
           <div style={{ display: 'flex' }}>
             <div style={{ width: '33%', overflowY: 'scroll', overflowX: 'hidden', margin: '0 2em 0 2em', maxHeight: '400px' }}>
               <table className="table table-striped table-dark">
@@ -139,8 +102,8 @@ export default class Reports extends PureComponent {
             <YAxis dataKey="no_tasks" />
             <Tooltip />
             <Legend />
-            {this.state.data.map(s => (
-              <Line dataKey="no_tasks" data={s.data} name={s.name} key={s.name} />
+            {this.state.data.map(resource => (
+              <Line stroke={resource.color} dataKey="no_tasks" data={resource.data} name={resource.name} key={resource.id} />
             ))}
           </LineChart>
         </>
