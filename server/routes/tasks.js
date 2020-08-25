@@ -3,6 +3,7 @@ const { authenticated, managerPermission } = require('../auth');
 const Task = require('../models/Task');
 const User = require('../models/User');
 const { getDate } = require('../utils');
+const WorkLog = require('../models/WorkLog');
 
 const enums = {
     type: ['bugfix', 'issue', 'feature'],
@@ -54,5 +55,14 @@ route.put('/', managerPermission, (req, res) => {
 //         res.status(500).send({ message: 'Something went wrong. Try again later.' })
 //     });
 // })
+
+route.get('/:id/worklog', authenticated, (req, res) => {
+    const task_id = req.params.id;
+    WorkLog.findAll({ where: { task_id }, raw: true }).then(result => res.send(result))
+        .catch(err => {
+            console.log(err);
+            res.status(500).send({ message: 'Internal server error!' });
+        })
+})
 
 module.exports = route;

@@ -12,7 +12,7 @@ export default class Tasks extends React.Component {
         if (localStorage.getItem('user_role') === 'manager') {
             return <TasksManager toastRef={this.props.toastRef} />
         }
-        return <TasksResource />
+        return <TasksResource toastRef={this.props.toastRef} />
     }
 
     // render() {

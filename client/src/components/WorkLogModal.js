@@ -22,17 +22,20 @@ export default class WorkLogModal extends React.Component {
     }
 
     handleSave() {
-        const { description, from, to, date } = this.state;
+        const { description, from, to, date, worked } = this.state;
         const hourRegexp = new RegExp(/^\d{1,2}[:][0-5][0-9]$/);
         if (description && from && to && date) {
             if (hourRegexp.test(from) && hourRegexp.test(to) &&
                 Date.parse(`01/01/2000 ${from}`) < Date.parse(`01/01/2000 ${to}`) && this.getWorked() > 0) {
+                this.props.onSave({ description, from, to, date, worked });
+
                 this.setState({
                     from: '',
                     description: '',
                     to: '',
+                    date: null,
+                    worked: '',
                 });
-                this.props.onSave({ description, from, to, date });
             } else {
                 this.setState({ message: 'Time interval is wrong!' })
             }
@@ -98,7 +101,7 @@ export default class WorkLogModal extends React.Component {
                     </div>
                     <div>
                         <label>Worked:</label>
-                        <span>{this.state.worked}</span>
+                        <span>{this.state.worked ? `${this.state.worked} minutes` : ''}</span>
                     </div>
                     <p style={{ textAlign: 'center', color: 'red' }}>{this.state.message}</p>
                 </Modal.Body>

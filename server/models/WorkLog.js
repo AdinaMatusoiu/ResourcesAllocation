@@ -12,6 +12,7 @@ const WorkLog = db.define('worklog', {
     date: Sequelize.DATE,
     from: Sequelize.STRING,
     to: Sequelize.STRING,
+    worked: Sequelize.INTEGER,
     task_id: {
         type: Sequelize.INTEGER,
         references: {

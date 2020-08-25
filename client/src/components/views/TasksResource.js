@@ -31,11 +31,12 @@ export default class TaskResource extends React.Component {
         this.setState({ currentTask: this.state.tasks[index] })
     }
 
+
     render() {
         return (
             <div style={{ display: 'flex' }}>
                 <TasksList tasks={this.state.tasks} onTaskClicked={this.handleTaskClicked.bind(this)} />
-                <Task {...this.state.currentTask} />
+                <Task {...this.state.currentTask} toastRef={this.props.toastRef} />
             </div>
         )
     }
