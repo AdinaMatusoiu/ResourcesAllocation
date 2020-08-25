@@ -60,7 +60,6 @@ export default class Reports extends PureComponent {
     console.log(month, status, resource_ids);
     // const resource_ids = this.state.resources.filter(elem => elem.selected).map(elem => elem.id);
     return http.get(`/reports/?month=${month}&status=${status}&resource_ids=${resource_ids.join(',')}`).then(data => {
-      console.log(data);
       return data;
     }).catch(error => {
       console.log(error);

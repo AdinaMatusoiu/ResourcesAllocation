@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom';
 import { Navbar, Nav } from 'react-bootstrap';
 
 export default class Navigationbar extends React.Component {
+    constructor(props) {
+        super(props);
+    }
 
     render() {
 
@@ -14,7 +17,7 @@ export default class Navigationbar extends React.Component {
                     <Nav className="mr-auto">
                         <Link className="link" to="/home">Home</Link>
                         <Link className="link" to="/contact">Contact</Link>
-                        <Link className="link" to="/tasks">Tasks</Link>
+                        <Link className="link" onClick={() => this.props.onEnterViewerMode(null)} to="/tasks">Tasks</Link>
                         <Link className="link" to="/reports">Reports</Link>
                     </Nav>
                     <Nav>

@@ -61,7 +61,6 @@ export default class TasksManager extends React.Component {
 
     handleSave(data) {
         this.setState({ showModal: false })
-        console.log(data);
         http.post('/tasks', data)
             .then((created) => {
                 const { tasks } = this.state;
@@ -165,7 +164,7 @@ export default class TasksManager extends React.Component {
                                         return <tr onDragEnter={this.handleDragEnter.bind(this)} onDragLeave={this.handleDragLeave.bind(this)} onDragOver={e => e.preventDefault()} onDrop={this.handleDrop.bind(this)} key={index}>
                                             <td>{resource.name}</td>
                                             <td>{resource.no_tasks}</td>
-                                            <td className="clickable"><Button variant="primary">See Details</Button>
+                                            <td className="clickable"><Button onClick={() => this.props.onEnterViewerMode(resource.id)} variant="primary">See Details</Button>
                                             </td>
                                         </tr>
                                     } else return <tr key={index}><td></td><td></td><td></td></tr>

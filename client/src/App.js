@@ -21,13 +21,20 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.toastRef = React.createRef();
+    this.state = {
+      viewer_id: null,
+    }
+  }
+
+  handleEnterViewerMode(viewer_id) {
+    this.setState({ viewer_id });
   }
 
   render() {
     return (
       <>
         <Router history={history}>
-          <NavigationBar />
+          <NavigationBar onEnterViewerMode={this.handleEnterViewerMode.bind(this)} />
           <Switch>
             <Route path="/" exact>
               <Home />
@@ -42,7 +49,7 @@ export default class App extends React.Component {
               <Protected Component={Home} />
             </Route>
             <Route path="/tasks">
-              <Protected Component={Tasks} toastRef={this.toastRef} />
+              <Protected Component={Tasks} toastRef={this.toastRef} viewer_id={this.state.viewer_id} onEnterViewerMode={this.handleEnterViewerMode.bind(this)} />
             </Route>
             <Route path="/reports">
               {localStorage.getItem('user_role') === 'manager' ? <Reports /> : <Protected Component={Home} />}

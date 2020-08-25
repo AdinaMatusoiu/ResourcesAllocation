@@ -14,7 +14,7 @@ route.post('/login', (req, res) => {
             bcrypt.compare(req.body.password, user.password_hash).then(result => {
                 if (result) {
                     const token = jwt.sign({ user_id: user.id, user_role: user.user_role }, secret);
-                    res.send({ message: 'Success', access_token: token, user_role: user.user_role });
+                    res.send({ message: 'Success', access_token: token, user_role: user.user_role, user_id: user.id });
                 } else {
                     res.status(400).send({ message: 'Email or password is incorrect' });
                 }
@@ -58,9 +58,9 @@ route.get('/manager/tasks', managerPermission, (req, res) => {
         })
 })
 
-route.get('/resources/tasks', authenticated, (req, res) => {
-    const { user_id } = req.decoded;
-    Task.findAll({ where: { resource_id: user_id } })
+route.get('/resources/:id/tasks', authenticated, (req, res) => {
+    const user_id = req.params.id;
+    Task.findAll({ where: { resource_id: user_id, status: 'open' } })
         .then(tasks => {
             res.send(tasks);
         }).catch(error => {

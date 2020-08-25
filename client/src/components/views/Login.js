@@ -16,6 +16,7 @@ export default class Login extends React.Component {
         http.post('/users/login', this.state).then(data => {
             localStorage.setItem('access_token', data.access_token);
             localStorage.setItem('user_role', data.user_role);
+            localStorage.setItem('user_id', data.user_id);
             history.push('/home');
         }).catch(error => {
             console.log(error);

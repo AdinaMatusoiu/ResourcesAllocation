@@ -21,7 +21,7 @@ route.post('/', managerPermission, (req, res) => {
     if (name && description && type && priority && enums.type.indexOf(type) !== -1 && enums.priority.indexOf(priority) !== -1) {
         Task.findOne({ where: { creator_id: user_id, name } }).then(task => {
             if (!task) {
-                Task.create({ name, description, type, priority, status: 'open', creator_id: user_id, deadline: deadline ? getDate(deadline) : null })
+                Task.create({ name, description, type, priority, status: 'open', creator_id: user_id, deadline: deadline ? getDate(deadline) : null, creation_date: getDate(new Date().toLocaleDateString('en-us')) })
                     .then(created => res.status(201).send(created))
                     .catch(err => {
                         console.log(err);
@@ -37,7 +37,6 @@ route.post('/', managerPermission, (req, res) => {
 })
 
 route.put('/', managerPermission, (req, res) => {
-    console.log(req.body);
     const { resource_id, task_id } = req.body;
     Task.update({ resource_id }, { where: { id: task_id } })
         .then(() => res.status(200).send())
@@ -56,7 +55,7 @@ route.put('/', managerPermission, (req, res) => {
 //     });
 // })
 
-route.get('/:id/worklog', authenticated, (req, res) => {
+route.get('/:id/worklogs', authenticated, (req, res) => {
     const task_id = req.params.id;
     WorkLog.findAll({ where: { task_id }, raw: true }).then(result => res.send(result))
         .catch(err => {

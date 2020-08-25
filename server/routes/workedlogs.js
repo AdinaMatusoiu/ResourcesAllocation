@@ -3,7 +3,6 @@ const { authenticated } = require('../auth');
 const WorkLog = require('../models/WorkLog');
 const { getDate } = require('../utils');
 route.post('/', authenticated, (req, res) => {
-    console.log(req.body);
     const { description, from, to, date, worked, task_id } = req.body;
     if (description && from && to && date && worked) {
         WorkLog.create({ description, from, to, worked, task_id, date: getDate(date) }).then(created => {

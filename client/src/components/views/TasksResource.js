@@ -14,7 +14,8 @@ export default class TaskResource extends React.Component {
     }
 
     componentDidMount() {
-        http.get('/users/resources/tasks').then(tasks => {
+        console.log(`/users/resources/${this.props.viewer_id || localStorage.getItem('user_id')}/tasks`);
+        http.get(`/users/resources/${this.props.viewer_id || localStorage.getItem('user_id')}/tasks`).then(tasks => {
             const stateTasks = this.state.tasks;
             if (tasks.length >= 10) {
                 this.setState({ tasks })
@@ -27,8 +28,37 @@ export default class TaskResource extends React.Component {
         });
     }
 
+    componentDidUpdate() {
+        console.log('viewer_id: ', this.props.viewer_id);
+    }
+
     handleTaskClicked(index) {
-        this.setState({ currentTask: this.state.tasks[index] })
+
+
+        http.get(`/tasks/${this.state.tasks[index].id}/worklogs`).then(worklogs => {
+            let { currentTask } = this.state;
+            currentTask = this.state.tasks[index];
+            currentTask.worklogs = [null, null, null, null, null];
+            if (worklogs.length >= 5) {
+                currentTask.worklogs = worklogs;
+            } else {
+                worklogs.forEach((worklog, index) => {
+                    currentTask.worklogs[index] = worklog;
+                })
+            }
+            this.setState({ currentTask });
+        })
+    }
+
+    handleWorklogCreated(created) {
+        const { currentTask } = this.state;
+        const index = currentTask.worklogs.indexOf(null);
+        if (index !== -1) {
+            currentTask.worklogs[index] = created;
+        } else {
+            currentTask.worklogs.push(created);
+        }
+        this.setState({ currentTask });
     }
 
 
@@ -36,7 +66,7 @@ export default class TaskResource extends React.Component {
         return (
             <div style={{ display: 'flex' }}>
                 <TasksList tasks={this.state.tasks} onTaskClicked={this.handleTaskClicked.bind(this)} />
-                <Task {...this.state.currentTask} toastRef={this.props.toastRef} />
+                <Task viewer_id={this.props.viewer_id} {...this.state.currentTask} toastRef={this.props.toastRef} onWorklogCreated={this.handleWorklogCreated.bind(this)} />
             </div>
         )
     }
