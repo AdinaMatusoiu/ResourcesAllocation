@@ -13,6 +13,7 @@ export default class WorkLogModal extends React.Component {
             to: '',
             date: null,
             message: '',
+            worked: '',
         }
     }
 
@@ -25,7 +26,7 @@ export default class WorkLogModal extends React.Component {
         const hourRegexp = new RegExp(/^\d{1,2}[:][0-5][0-9]$/);
         if (description && from && to && date) {
             if (hourRegexp.test(from) && hourRegexp.test(to) &&
-                Date.parse(`01/01/2000 ${from}`) < Date.parse(`01/01/2000 ${to}`)) {
+                Date.parse(`01/01/2000 ${from}`) < Date.parse(`01/01/2000 ${to}`) && this.getWorked() > 0) {
                 this.setState({
                     from: '',
                     description: '',
@@ -42,7 +43,32 @@ export default class WorkLogModal extends React.Component {
 
     handleFormChange(event, prop) {
         this.setState({ [prop]: event.target.value });
+
     }
+
+    getWorked() {
+        if (this.state.from && this.state.to) {
+            let worked = 0;
+            let hoursFrom = this.state.from.split(':')[0];
+            let minutesFrom = this.state.from.split(':')[1];
+            let hoursTo = this.state.to.split(':')[0];
+            let minutesTo = this.state.to.split(':')[1];
+
+            let From = new Date(2020, 1, 1, hoursFrom, minutesFrom);
+            let To = new Date(2020, 1, 1, hoursTo, minutesTo);
+
+            worked = (To - From) / 1000 / 60;
+            return worked;
+        }
+    }
+
+    handleFromToBlur() {
+        const worked = this.getWorked();
+        if (worked > 0) {
+            this.setState({ worked })
+        }
+    }
+
     onDateChange(value) {
         this.setState({ date: value });
     }
@@ -64,11 +90,15 @@ export default class WorkLogModal extends React.Component {
                     </div>
                     <div>
                         <label>From:</label>
-                        <input value={this.state.name} onChange={e => this.handleFormChange(e, 'from')} />
+                        <input onBlur={this.handleFromToBlur.bind(this)} value={this.state.name} onChange={e => this.handleFormChange(e, 'from')} />
                     </div>
                     <div>
                         <label>To:</label>
-                        <input value={this.state.name} onChange={e => this.handleFormChange(e, 'to')} />
+                        <input onBlur={this.handleFromToBlur.bind(this)} value={this.state.name} onChange={e => this.handleFormChange(e, 'to')} />
+                    </div>
+                    <div>
+                        <label>Worked:</label>
+                        <span>{this.state.worked}</span>
                     </div>
                     <p style={{ textAlign: 'center', color: 'red' }}>{this.state.message}</p>
                 </Modal.Body>
