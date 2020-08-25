@@ -1,6 +1,7 @@
 const User = require('./User');
 const Task = require('./Task');
 const WorkLog = require('./WorkLog');
+const Calendar = require('./Calendar');
 // .create({}), .findAll({attributes: ['id'], where: { name: 'axinte'}})/.findOne, .destroy, .update
 //  insert          select          delete      update
 

@@ -11,14 +11,13 @@ route.get('/', managerPermission, (req, res) => {
 
     User.findAll({ attributes: ['id', 'name'], where: { id: resource_ids }, raw: true }).then(resources => {
         Promise.all(resources = resources.map(resource => {
-            return db.query(`select mydates.mydate as date, count(tasks.id) as no_tasks from mydates
-            left join tasks on mydates.mydate = tasks.creation_date and tasks.resource_id = ${resource.id}
-            where month(mydates.mydate) = ${month} and tasks.status='${status}' group by mydates.mydate`, { type: db.QueryTypes.SELECT }).then(data => {
-                data = data.map(elem => {
-                    elem.date = elem.date.split('-')[2];
-                    return elem
-                })
-                resource.data = data;
+            return db.query(`select calendars.id, calendars.mydate as date, count(tasks.id) as no_tasks from calendars
+            left join tasks on calendars.mydate = tasks.creation_date and tasks.resource_id = ${resource.id} and tasks.status='${status}'
+            where month(calendars.mydate) = ${month} group by calendars.id, calendars.mydate`, { type: db.QueryTypes.SELECT }).then(data => {
+                resource.data = data.map(elem => {
+                    elem.date = elem.date.getDate();
+                    return elem;
+                });
                 return resource;
             })
         })).then(resources => {
