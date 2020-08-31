@@ -8,7 +8,7 @@ const WorkLog = require('../models/WorkLog');
 const enums = {
     type: ['bugfix', 'issue', 'feature'],
     status: ['open', 'closed'],
-    priority: ['low', 'medium', 'high_on_mushrooms'],
+    priority: ['low', 'medium', 'high'],
 }
 
 route.get('/enums', authenticated, (_, res) => {
@@ -45,6 +45,22 @@ route.put('/', managerPermission, (req, res) => {
             res.status(500).send({ message: 'Internal server error!' });
         })
 })
+
+route.put('/tasks/:id', authenticated, (req, res) => {
+    const { status } = req.body;
+    const { task_id } = req.params.id;
+    if (status && task_id) {
+        Task.update({ status }, { where: { id: task_id } })
+            .then(() => res.send())
+            .catch(err => {
+                console.log(err);
+                res.status(500).send({ message: 'Internal server error!' });
+            })
+    } else {
+        res.status(400).send({ message: 'Wrong body format' });
+    }
+})
+
 
 // router.get('/tasks', (req, res) => {
 //     Task.findAll().then(task => {

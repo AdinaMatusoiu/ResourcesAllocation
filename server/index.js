@@ -14,7 +14,7 @@ db.sync()
 //     const enums = {
 //         type: ['bugfix', 'issue', 'feature'],
 //         status: ['open', 'closed'],
-//         priority: ['low', 'medium', 'high_on_mushrooms'],
+//         priority: ['low', 'medium', 'high'],
 //     }
 
 //     User.findAll({ where: { user_role: 'resource' }, raw: true })

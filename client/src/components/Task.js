@@ -41,6 +41,12 @@ export default class Task extends React.Component {
         this.setState({ showModal: false });
     }
 
+
+
+
+
+
+
     render() {
         return (<div style={{ width: '50%', margin: '0 2em 0 2em' }}>
             <h3>Details</h3>
@@ -56,6 +62,9 @@ export default class Task extends React.Component {
                 </Button>
             <Button variant="primary" onClick={this.handleShow.bind(this, 'table')} disabled={!this.props.name}>
                 See Worklog
+                </Button>
+            <Button varian="primary" disable={!this.props.name} >
+                Close Task
                 </Button>
             <WorkLogTableModal worklogs={this.props.worklogs ? this.props.worklogs : []} show={this.state.showTableModal} onClose={this.handleClose.bind(this, 'table')} />
 
