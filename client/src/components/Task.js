@@ -32,8 +32,8 @@ export default class Task extends React.Component {
     handleSave(data) {
         http.post('/workedlogs', { ...data, task_id: this.props.id })
             .then(created => {
-                this.props.toastRef.current.show('Worklog created', '', 3000);
                 this.props.onWorklogCreated(created);
+                this.props.toastRef.current.show('Worklog created', '', 3000);
             }).catch(error => {
                 console.log(error);
                 this.props.toastRef.current.show('', error.data.message, 3000);
@@ -41,11 +41,16 @@ export default class Task extends React.Component {
         this.setState({ showModal: false });
     }
 
-
-
-
-
-
+    handleCloseTask() {
+        http.put(`/tasks/${this.props.id}`, { status: 'closed' })
+            .then(() => {
+                this.props.toastRef.current.show(`Task ${this.props.name} closed`, '', 3000);
+                this.props.onTaskClosed(this.props.id);
+            }).catch(error => {
+                console.log(error);
+                this.props.toastRef.current.show('', error.data.message, 3000);
+            })
+    }
 
     render() {
         return (<div style={{ width: '50%', margin: '0 2em 0 2em' }}>
@@ -63,7 +68,7 @@ export default class Task extends React.Component {
             <Button variant="primary" onClick={this.handleShow.bind(this, 'table')} disabled={!this.props.name}>
                 See Worklog
                 </Button>
-            <Button varian="primary" disable={!this.props.name} >
+            <Button varian="primary" disabled={!this.props.name} onClick={this.handleCloseTask.bind(this)}>
                 Close Task
                 </Button>
             <WorkLogTableModal worklogs={this.props.worklogs ? this.props.worklogs : []} show={this.state.showTableModal} onClose={this.handleClose.bind(this, 'table')} />

@@ -46,9 +46,9 @@ route.put('/', managerPermission, (req, res) => {
         })
 })
 
-route.put('/tasks/:id', authenticated, (req, res) => {
+route.put('/:id', authenticated, (req, res) => {
     const { status } = req.body;
-    const { task_id } = req.params.id;
+    const task_id = req.params.id;
     if (status && task_id) {
         Task.update({ status }, { where: { id: task_id } })
             .then(() => res.send())

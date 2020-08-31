@@ -14,7 +14,6 @@ export default class TaskResource extends React.Component {
     }
 
     componentDidMount() {
-        console.log(`/users/resources/${this.props.viewer_id || localStorage.getItem('user_id')}/tasks`);
         http.get(`/users/resources/${this.props.viewer_id || localStorage.getItem('user_id')}/tasks`).then(tasks => {
             const stateTasks = this.state.tasks;
             if (tasks.length >= 10) {
@@ -28,13 +27,7 @@ export default class TaskResource extends React.Component {
         });
     }
 
-    componentDidUpdate() {
-        console.log('viewer_id: ', this.props.viewer_id);
-    }
-
     handleTaskClicked(index) {
-
-
         http.get(`/tasks/${this.state.tasks[index].id}/worklogs`).then(worklogs => {
             let { currentTask } = this.state;
             currentTask = this.state.tasks[index];
@@ -61,12 +54,18 @@ export default class TaskResource extends React.Component {
         this.setState({ currentTask });
     }
 
+    handleTaskClosed(task_id) {
+        const tasksCopy = this.state.tasks;
+        const index = tasksCopy.map(task => task.id).indexOf(task_id);
+        tasksCopy.splice(index, 1);
+        this.setState({ tasks: tasksCopy, currentTask: null });
+    }
 
     render() {
         return (
             <div style={{ display: 'flex' }}>
                 <TasksList tasks={this.state.tasks} onTaskClicked={this.handleTaskClicked.bind(this)} />
-                <Task viewer_id={this.props.viewer_id} {...this.state.currentTask} toastRef={this.props.toastRef} onWorklogCreated={this.handleWorklogCreated.bind(this)} />
+                <Task onTaskClosed={this.handleTaskClosed.bind(this)} viewer_id={this.props.viewer_id} {...this.state.currentTask} toastRef={this.props.toastRef} onWorklogCreated={this.handleWorklogCreated.bind(this)} />
             </div>
         )
     }
